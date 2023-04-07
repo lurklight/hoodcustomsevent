@@ -1,0 +1,69 @@
+local coords = {
+    {-471, 4, 58},
+    {-424, 11, -25},
+    {-309, 7, -35},
+    {8, 4, -105},
+    {325, 4, -203},
+    {244, 7, -46},
+    {-51, 4, -468},
+    {-98, 4, -874},
+    {-924, 4, -330},
+    {-929, 4, -331},
+    {-959, 33, -293},
+    {-550, 33, -708},
+    {-672, 34, -652},
+    {-667, 5, -444},
+    {301, 3, -516},
+    {308, 33, -530},
+    {326, 4, -700},
+    {-619, 2, -653},
+    {-666, 3, -222},
+    {-626, 8, -280},
+    {-348, 33, -896},
+    {-823, 11, -620},
+    {-298, 4, -918},
+    {-476, 5, -259},
+    {-264, 19, 68},
+    {-55, 32, -203},
+    {-98, 3, -804},
+    {-456, 7, -303},
+    {-332, 9, -313},
+    {-249, 32, -215},
+    {-31, 7, -318}
+}
+
+local currentIndex = 1
+
+function teleportPlayer(x, y, z)
+    local player = game.Players.LocalPlayer.Character
+    player:MoveTo(Vector3.new(x, y, z))
+end
+
+function teleportToNext()
+    currentIndex = currentIndex + 1
+    if currentIndex > #coords then
+        currentIndex = 1
+    end
+    teleportPlayer(coords[currentIndex][1], coords[currentIndex][2], coords[currentIndex][3])
+end
+
+function teleportToPrevious()
+    currentIndex = currentIndex - 1
+    if currentIndex < 1 then
+        currentIndex = #coords
+    end
+    teleportPlayer(coords[currentIndex][1], coords[currentIndex][2], coords[currentIndex][3])
+end
+
+teleportPlayer(coords[currentIndex][1], coords[currentIndex][2], coords[currentIndex][3])
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode == Enum.KeyCode.X then
+        teleportToPrevious()
+    end
+end)
+
+repeat
+    wait(5)
+    teleportToNext()
+until false
